@@ -10,7 +10,6 @@ import { LoadingModal } from '../../components/Modals'
 
 const RegisterScreen_1 = ({navigation}) => {
 
-  const netInfo = useNetInfo()
   const [errorMessage, setErrorMessage] = useState('') // Something went wrong please try again.
   const [isAppLoading, setIsAppLoading] = useState(false)
   

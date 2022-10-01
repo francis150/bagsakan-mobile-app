@@ -4,12 +4,13 @@ import Icon from '@expo/vector-icons/Feather'
 
 import { Colors, Fonts } from '../../constants/Values'
 
-const PrimaryButton = ({style, icon, text, onPress}) => {
+const PrimaryButton = ({style, icon, text, onPress, disabled}) => {
   return (
     <TouchableOpacity 
     activeOpacity={.9}
-    style={[styles.container, style]}
-    onPress={onPress}>
+    style={[styles.container, {opacity: disabled ? .5 : 1}, style]}
+    onPress={onPress}
+    disabled={disabled}>
         
         {
             icon ?
@@ -41,7 +42,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         shadowOffset: {width: 6, height: 6},
         shadowColor: Colors.accentColor,
-        elevation: 20
+        elevation: 20,
     },
     icon: {
         marginRight: 10

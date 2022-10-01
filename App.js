@@ -6,7 +6,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import {useNetInfo} from '@react-native-community/netinfo'
 
 import { MessageModal } from './src/components/Modals'
-import RegisterScreen_1 from './src/screens/AuthStack/RegisterScreen_1';
+import RegisterScreen_2 from './src/screens/AuthStack/RegisterScreen_2';
 
 export default function App() {
 
@@ -57,7 +57,7 @@ export default function App() {
       style={styles.container}
       onLayout={onRootViewLayout}>
 
-        <RegisterScreen_1/>
+        <RegisterScreen_2/>
 
       </SafeAreaView>
 
