@@ -4,6 +4,8 @@ import * as Font from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 
+import LoginScreen from './src/screens/AuthStack/LoginScreen'
+
 export default function App() {
 
   const [isAppReady, setIsAppReady] = useState(false)
@@ -44,6 +46,8 @@ export default function App() {
       <SafeAreaView
       style={styles.container}
       onLayout={onRootViewLayout}>
+
+        <LoginScreen/>
 
         <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       </SafeAreaView>
