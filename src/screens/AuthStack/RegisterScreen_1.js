@@ -1,5 +1,6 @@
 import {useState, createRef} from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard } from 'react-native'
+import * as Yup from 'yup'
 
 import {Colors, Fonts, Layout} from '../../constants/Values'
 import { StackHeader } from '../../components/Headers'
@@ -23,7 +24,40 @@ const RegisterScreen_1 = ({navigation}) => {
   }
 
   const onNextButtonPressed = () => {
+    Keyboard.dismiss()
+    setIsAppLoading(true)
+    setErrorMessage('')
 
+    setTimeout( async () => {
+      try {
+        // validate
+        const validationSchema = Yup.object().shape({
+          lastName: Yup.string()
+            .required('Please enter your last name.')
+            .matches(/^[aA-zZ\s]+$/, 'Please enter a valid last name.')
+            .max(40, 'Please enter a valid last name'),
+          firstName: Yup.string()
+            .required('Please enter your first name.')
+            .matches(/^[aA-zZ\s]+$/, 'Please enter a valid first name.')
+            .max(40, 'Please enter a valid first name'),
+        })
+
+        await validationSchema.validate({firstName, lastName})
+        // ...
+
+        // navigate
+        navigation.navigate('RegisterScreen_2', {firstName, lastName})
+      } catch (err) {
+        
+        if (err.name == 'ValidationError') return setErrorMessage(err.errors[0])
+
+        setErrorMessage('Something went wrong. Please contact support.')
+        return console.error(err.message)
+
+      } finally {
+        setIsAppLoading(false)
+      }
+    }, 1000)
   }
   
   return (
@@ -39,7 +73,7 @@ const RegisterScreen_1 = ({navigation}) => {
         />
 
         <StackHeader
-          onPress={() => navigation.goBack()}
+          onBack={() => navigation.goBack()}
           suffixText={'1/3'}
         />
 

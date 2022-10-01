@@ -14,7 +14,7 @@ import {OTPVerificationModal, MessageModal, LoadingModal} from '../../components
 import {Link, PrimaryButton} from '../../components/Buttons'
 import { InputText } from '../../components/Inputs'
 
-const LoginScreen = () => {
+const LoginScreen = ({navigation}) => {
 
     const [errorMessage, setErrorMessage] = useState('') // Something went wrong please try again.
     const [isAppLoading, setIsAppLoading] = useState(false)
@@ -120,6 +120,19 @@ const LoginScreen = () => {
         onLoginButtonPressed()
     }
 
+    const onRegisterTextPressed = () => {
+        setIsAppLoading(true)
+
+        setTimeout(() => {
+            navigation.navigate('RegisterScreen_1')
+            setIsAppLoading(false)
+        }, 1000)
+    }
+
+    const onHelpTextPressed = () => {
+        console.log('Help text pressed...')
+    }
+
   return (
     <TouchableWithoutFeedback
     onPress={() => phoneNumberInput.current.blur()} >
@@ -197,13 +210,13 @@ const LoginScreen = () => {
                     style={styles.registerGroupContainer}
                 >
                     <Text style={styles.registerGroupText}>Don't have an account?</Text>
-                    <Link style={styles.registerText} text={'Register'} />
+                    <Link style={styles.registerText} text={'Register'} onPress={onRegisterTextPressed} />
                 </View>
 
                 <Link
                     style={styles.helpText}
                     text={'Having trouble logging in?'}
-                    onPress={() => console.log('Help text pressed')}
+                    onPress={onHelpTextPressed}
                 />
 
             </ScrollView>
