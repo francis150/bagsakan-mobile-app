@@ -1,5 +1,6 @@
 import {useState, useRef} from 'react'
 import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Keyboard } from 'react-native'
+import * as Yup from 'yup'
 
 import {Colors, Fonts, Layout} from '../../constants/Values'
 import { StackHeader } from '../../components/Headers'
@@ -8,7 +9,7 @@ import { InputSelect, InputText } from '../../components/Inputs'
 import { PrimaryButton } from '../../components/Buttons'
 
 
-const RegisterScreen_2 = ({navigation}) => {
+const RegisterScreen_2 = ({navigation, route}) => {
 
     const [errorMessage, setErrorMessage] = useState('') // Something went wrong please try again.
     const [isAppLoading, setIsAppLoading] = useState(false)
@@ -25,7 +26,37 @@ const RegisterScreen_2 = ({navigation}) => {
     }
 
     const onNextButtonPressed = () => {
-        console.log('Next ...')
+        Keyboard.dismiss()
+        setIsAppLoading(true)
+        setErrorMessage('')
+
+        setTimeout(async () => {
+            try {
+                // validate
+                const validationSchema = Yup.object().shape({
+                    city: Yup.object().shape({
+                        id: Yup.string()
+                            .required('Please enter your city or municipality.'),
+                    }),
+                    streetAddress: Yup.string()
+                        .required('Please enter your street address, phone no., or landmarks.'),
+                    neigborhood: Yup.string()
+                        .required('Please enter your barangay.'),
+                })
+
+                await validationSchema.validate({streetAddress, neigborhood, city})
+
+                // navigate
+                navigation.navigate('RegisterScreen_3', {...route.params, city, neigborhood, streetAddress})
+            } catch (err) {
+                if (err.name == 'ValidationError') return setErrorMessage(err.errors[0])
+
+                setErrorMessage('Something went wrong. Please contact support.')
+                return console.error(err.message)
+            } finally {
+                setIsAppLoading(false)
+            }
+        }, 1000)
     }
 
   return (
