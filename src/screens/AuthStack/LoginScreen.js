@@ -76,6 +76,9 @@ const LoginScreen = ({navigation}) => {
                 // phone number does not exist
                 if (err.code == 'PHONE_NUMBER_NOT_FOUND') return setErrorMessage('Phone number not found.')
 
+                // Firebase recaptcha error
+                if (err.code == 'ERR_FIREBASE_RECAPTCHA_CANCEL') return setErrorMessage('reCaptcha required')
+
                 setErrorMessage('Something went wrong please try again later.')
                 console.error(err.message)
             } finally {
@@ -103,6 +106,9 @@ const LoginScreen = ({navigation}) => {
             // incorrect otp
             if (err.code === 'auth/invalid-verification-code') return setErrorMessage('Incorrect OTP please try again')
 
+            // otp expired
+            if (err.code == 'auth/code-expired') return setErrorMessage('OTP Expired. Please try again.')
+
             setErrorMessage('Something went wrong please try again.')
             console.error(err.message)
         } finally {
@@ -110,7 +116,7 @@ const LoginScreen = ({navigation}) => {
         }
     }
 
-    const onOTPVerificationCanceled = () => {
+    const onOTPVerificationCancelled = () => {
         setShowOTPVerification(false)
         setErrorMessage('OTP Verification is required.')
     }
@@ -148,7 +154,7 @@ const LoginScreen = ({navigation}) => {
                 title={'Verify your login'}
                 onSubmit={(otp) => onOTPVerificationVerify(otp)}
                 onResendCode={onOTPVerificationCodeResend}
-                onCancel={onOTPVerificationCanceled} 
+                onCancel={onOTPVerificationCancelled} 
             />
 
             <MessageModal
