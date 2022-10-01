@@ -5,21 +5,30 @@ import * as SplashScreen from 'expo-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 import {useNetInfo} from '@react-native-community/netinfo'
 
+import { fireAuth } from './src/config/Firebase'
+import { onAuthStateChanged } from 'firebase/auth'
+
 import { MessageModal } from './src/components/Modals'
-import RegisterScreen_3 from './src/screens/AuthStack/RegisterScreen_3';
+import AuthStack from './src/routes/AuthStack'
+import TestHome from './src/screens/TestHome'
 
 export default function App() {
 
   const [isAppReady, setIsAppReady] = useState(false)
 
+  const [userSignedIn, setUserSignedIn] = useState(null)
+  const [signedInStateChecked, setSignedInStateChecked] = useState(false)
+
   const [showDisconnectionNotice, setShowDisconnectionNotice] = useState(false)
   const netInfo = useNetInfo()
 
+  // listen to internet connection
   useEffect(() => {
     if (netInfo.isConnected !== null && !netInfo.isConnected) return setShowDisconnectionNotice(true)
   }, [netInfo])
   
 
+  // prep codes
   useEffect(() => {
     const prep = async () => {
       try {
@@ -43,13 +52,21 @@ export default function App() {
 
     prep()
   }, [])
+
+  // listen to authentication state
+  useEffect(() => {
+    onAuthStateChanged(fireAuth, user => {
+      setUserSignedIn(user ? user : null)
+      setSignedInStateChecked(true)
+    })
+  }, [])
   
 
   const onRootViewLayout = useCallback(async () => {
-    if(isAppReady) await SplashScreen.hideAsync()
-  }, [isAppReady])
+    if(isAppReady && signedInStateChecked) await SplashScreen.hideAsync()
+  }, [isAppReady, signedInStateChecked])
 
-  if (!isAppReady) return null
+  if (!isAppReady || !signedInStateChecked) return null
 
   return (
     <NavigationContainer>
@@ -57,7 +74,11 @@ export default function App() {
       style={styles.container}
       onLayout={onRootViewLayout}>
 
-        <RegisterScreen_3/>
+        {
+          userSignedIn ?
+          <TestHome />
+          : <AuthStack />
+        }
 
       </SafeAreaView>
 
