@@ -1,31 +1,32 @@
 import {useState} from 'react'
-import { StyleSheet, Text, View } from 'react-native'
-import {Colors} from '../../constants/Values'
+import { StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 
+import {Colors, Fonts, Layout} from '../../constants/Values'
 import { StackHeader } from '../../components/Headers'
-import {OTPVerificationModal} from '../../components/Modals'
+import {OTPVerificationModal, MessageModal} from '../../components/Modals'
 import {PrimaryButton} from '../../components/Buttons'
 
 const LoginScreen = () => {
     const [value, setValue] = useState('')
 
-  return (
-    <View
-    style={styles.container}>
-      <StackHeader
-      title={'Notifications'}
-      suffixText={'2/3'}
-      onBack={() => console.log('Back...')} />
+    const onRootViewPressed = () => {
+        console.log('Root view pressed')
+    }
 
-      {/* <OTPVerificationModal
-      visible={true}
-      title={'Verify your login 🤗'} 
-      onSubmit={() => console.log('OTP verify')}
-      onCancel={() => console.log('OTP Cancel')}
-      onResendCode={() => console.log('OTP Resend')}
-      phoneNumber={'+639669257362'} /> */}
-      
-    </View>
+  return (
+    <TouchableWithoutFeedback
+    onPress={onRootViewPressed} >
+        <View
+        style={styles.container} >
+
+            <MessageModal
+            visible={true}
+            title={'No internet connection 😱'}
+            message={'It looks like you have a slow or no internet connection. Please check your internet connection and try again.'}
+            onOkay={() => console.log('Okay')} />
+
+        </View>
+    </TouchableWithoutFeedback>
   )
 }
 
@@ -34,5 +35,6 @@ export default LoginScreen
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: Colors.defaultWhite
     }
 })

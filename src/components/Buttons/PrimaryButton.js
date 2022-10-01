@@ -8,7 +8,8 @@ const PrimaryButton = ({style, icon, text, onPress}) => {
   return (
     <TouchableOpacity 
     activeOpacity={.9}
-    style={[styles.container, style]}>
+    style={[styles.container, style]}
+    onPress={onPress}>
         
         {
             icon ?
@@ -48,6 +49,6 @@ const styles = StyleSheet.create({
     text: {
         fontFamily: Fonts.semibold,
         fontSize: 16,
-        color: Colors.defaultWhite
+        color: Colors.defaultWhite,
     },
 })

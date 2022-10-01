@@ -24,7 +24,7 @@ const InputText = forwardRef(({
 
   return (
     <View
-    style={[styles.container, style]}>
+    style={style}>
 
       <View style={[styles.inputContainer, {
         borderColor: isFocused ? Colors.accentColor : Colors.inputBackground
@@ -97,7 +97,7 @@ export default InputText
 
 const styles = StyleSheet.create({
     container: {
-        width: '100%',
+        width:'100%'
     },
     inputContainer: {
         backgroundColor: Colors.inputBackground,
