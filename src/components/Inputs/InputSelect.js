@@ -166,7 +166,7 @@ export default InputSelect
 
 const styles = StyleSheet.create({
   container: {
-    
+    width: '100%',
   },
   inputSelectContainer: {
     flexDirection: 'row',

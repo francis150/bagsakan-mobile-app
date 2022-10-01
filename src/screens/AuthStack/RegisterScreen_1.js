@@ -1,6 +1,5 @@
 import {useState, createRef} from 'react'
 import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard } from 'react-native'
-import {useNetInfo} from '@react-native-community/netinfo'
 
 import {Colors, Fonts, Layout} from '../../constants/Values'
 import { StackHeader } from '../../components/Headers'

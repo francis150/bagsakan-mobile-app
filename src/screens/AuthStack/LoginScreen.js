@@ -44,7 +44,7 @@ const LoginScreen = () => {
                 title={'Verify your login'}
                 onSubmit={(otp) => console.log(`OTP: ${otp}`)}
                 onResendCode={() => console.log('Resend OTP')}
-                onCancel={() => {'OTP Canceled'}} 
+                onCancel={() => console.log('OTP Canceled')} 
             />
 
             <MessageModal
