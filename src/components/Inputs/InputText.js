@@ -84,10 +84,14 @@ const InputText = forwardRef(({
 
       </View>
 
-        <Text style={[
-            styles.infoText, 
-            {color: isFocused ? Colors.defaultBlack : Colors.placeholderColor}
-        ]}>{info}</Text>
+        {
+            info ?
+            <Text style={[
+                styles.infoText, 
+                {color: isFocused ? Colors.defaultBlack : Colors.placeholderColor}
+            ]}>{info}</Text>
+            : null
+        }
 
     </View>
   )
@@ -97,7 +101,7 @@ export default InputText
 
 const styles = StyleSheet.create({
     container: {
-        width:'100%'
+        width:'100%',
     },
     inputContainer: {
         backgroundColor: Colors.inputBackground,
@@ -121,7 +125,7 @@ const styles = StyleSheet.create({
     inputText: {
         flex: 1,
         fontFamily: Fonts.semibold,
-        fontSize: 16
+        fontSize: 16,
     },
     suffixIcon: {
         marginLeft: 10,
