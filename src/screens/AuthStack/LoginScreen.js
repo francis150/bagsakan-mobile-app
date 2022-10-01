@@ -1,9 +1,12 @@
-import {useState, createRef} from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import {useState, useRef} from 'react'
+import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
 import {useNetInfo} from '@react-native-community/netinfo'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
+import * as Yup from 'yup'
 
-import {fireApp} from '../../config/Firebase'
+import {fireApp, fireAuth, fireDb} from '../../config/Firebase'
+import { signInWithPhoneNumber } from 'firebase/auth'
+import {collection, query, where, getDocs} from 'firebase/firestore'
 
 import {Colors, Fonts, Layout} from '../../constants/Values'
 import { StackHeader } from '../../components/Headers'
@@ -13,20 +16,108 @@ import { InputText } from '../../components/Inputs'
 
 const LoginScreen = () => {
 
-    const netInfo = useNetInfo()
     const [errorMessage, setErrorMessage] = useState('') // Something went wrong please try again.
     const [isAppLoading, setIsAppLoading] = useState(false)
 
     const [showOTPVerification, setShowOTPVerification] = useState(false)
+    const [confirmationResult, setConfirmationResult] = useState(null)
+
+    const netInfo = useNetInfo()
     const [showDisconnectionNotice, setShowDisconnectionNotice] = useState(false)
 
     const [phoneNumber, setPhoneNumber] = useState('')
-    const phoneNumberInput = createRef()
+    const phoneNumberInput = useRef()
 
-    const reCaptchaVerifier = createRef()
+    const reCaptchaVerifier = useRef()
 
     const onLoginButtonPressed = () => {
-        console.log('Login button pressed')
+        Keyboard.dismiss()
+        setErrorMessage('')
+        setIsAppLoading(true)
+
+        setTimeout(async () => {
+            try {
+                // check internet connection
+                if (netInfo.isConnected !== null && !netInfo.isConnected) throw {code: 'INTERNET_CONNECTION_ERROR'}
+                // ...
+
+                // validate data
+                const validationSchema = Yup.object().shape({
+                    phoneNumber: Yup.string()
+                        .required('Please enter your phone number.')
+                        .test('starts-nine', 'Please enter a valid phone number.', (val) => val.charAt(0) == '9')
+                        .min(10, 'Please enter a valid phone number.')
+                })
+
+                await validationSchema.validate({phoneNumber})
+                // ...
+
+                // check if phone number exists
+                const userQuery = query(collection(fireDb, 'users'), where('phone_number', '==', `+63${phoneNumber}`))
+                const querySnapshot = await getDocs(userQuery)
+
+                if (querySnapshot.empty) throw {code: 'PHONE_NUMBER_NOT_FOUND'}
+                // ...
+
+                // singin to firebase auth
+                const res = await signInWithPhoneNumber(fireAuth, `+63${phoneNumber}`, reCaptchaVerifier.current)
+                setConfirmationResult(res)
+                // ...
+
+                // show OTP modal
+                setShowOTPVerification(true)
+            } catch (err) {
+                // no internet connection
+                if (err.code == 'INTERNET_CONNECTION_ERROR') return setShowDisconnectionNotice(true)
+
+                // validation error
+                if (err.name == 'ValidationError') return setErrorMessage(err.errors[0])
+
+                // phone number does not exist
+                if (err.code == 'PHONE_NUMBER_NOT_FOUND') return setErrorMessage('Phone number not found.')
+
+                setErrorMessage('Something went wrong please try again later.')
+                console.error(err.message)
+            } finally {
+                setIsAppLoading(false)
+            }
+        }, 1000)
+    }
+
+    const onOTPVerificationVerify = async (code) => {
+        setShowOTPVerification(false)
+        setIsAppLoading(true)
+
+        try {
+            // check internet connection
+            if (netInfo.isConnected !== null && !netInfo.isConnected) throw {code: 'INTERNET_CONNECTION_ERROR'}
+            // ...
+
+            // verify code
+            await confirmationResult.confirm(code)
+        } catch (err) {
+            
+            // no internet connection
+            if (err.code == 'INTERNET_CONNECTION_ERROR') return setShowDisconnectionNotice(true)
+
+            // incorrect otp
+            if (err.code === 'auth/invalid-verification-code') return setErrorMessage('Incorrect OTP please try again')
+
+            setErrorMessage('Something went wrong please try again.')
+            console.error(err.message)
+        } finally {
+            setIsAppLoading(false)
+        }
+    }
+
+    const onOTPVerificationCanceled = () => {
+        setShowOTPVerification(false)
+        setErrorMessage('OTP Verification is required.')
+    }
+
+    const onOTPVerificationCodeResend = () => {
+        setShowOTPVerification(false)
+        onLoginButtonPressed()
     }
 
   return (
@@ -42,9 +133,9 @@ const LoginScreen = () => {
             <OTPVerificationModal
                 visible={showOTPVerification}
                 title={'Verify your login'}
-                onSubmit={(otp) => console.log(`OTP: ${otp}`)}
-                onResendCode={() => console.log('Resend OTP')}
-                onCancel={() => console.log('OTP Canceled')} 
+                onSubmit={(otp) => onOTPVerificationVerify(otp)}
+                onResendCode={onOTPVerificationCodeResend}
+                onCancel={onOTPVerificationCanceled} 
             />
 
             <MessageModal
