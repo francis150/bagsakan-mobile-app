@@ -3,12 +3,22 @@ import { StyleSheet, SafeAreaView, StatusBar } from 'react-native';
 import * as Font from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
+import {useNetInfo} from '@react-native-community/netinfo'
 
 import LoginScreen from './src/screens/AuthStack/LoginScreen'
+import { MessageModal } from './src/components/Modals';
 
 export default function App() {
 
   const [isAppReady, setIsAppReady] = useState(false)
+
+  const [showDisconnectionNotice, setShowDisconnectionNotice] = useState(false)
+  const netInfo = useNetInfo()
+
+  useEffect(() => {
+    if (netInfo.isConnected !== null && !netInfo.isConnected) return setShowDisconnectionNotice(true)
+  }, [netInfo])
+  
 
   useEffect(() => {
     const prep = async () => {
@@ -49,8 +59,16 @@ export default function App() {
 
         <LoginScreen/>
 
-        <StatusBar barStyle="dark-content" backgroundColor="#fff" />
       </SafeAreaView>
+
+      <StatusBar barStyle="dark-content" backgroundColor="#fff" />
+
+      <MessageModal
+      visible={showDisconnectionNotice}
+      title={'No internet connection 😱'}
+      message={'It looks like you have a slow or no internet connection. Please check your internet connection and try again.'}
+      onOkay={() => setShowDisconnectionNotice(false)} />
+
     </NavigationContainer>
   )
 }
