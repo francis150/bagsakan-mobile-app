@@ -85,7 +85,7 @@ const styles = StyleSheet.create({
     marginBottom: 40,
   },
   inputText: {
-    marginBottom: 20
+    marginBottom: 40
   },
   primaryButton: {
     marginBottom: 20

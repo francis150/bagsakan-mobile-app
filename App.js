@@ -5,8 +5,8 @@ import * as SplashScreen from 'expo-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 import {useNetInfo} from '@react-native-community/netinfo'
 
-import LoginScreen from './src/screens/AuthStack/LoginScreen'
-import { MessageModal } from './src/components/Modals';
+import { MessageModal } from './src/components/Modals'
+import RegisterScreen_1 from './src/screens/AuthStack/RegisterScreen_1';
 
 export default function App() {
 
@@ -57,7 +57,7 @@ export default function App() {
       style={styles.container}
       onLayout={onRootViewLayout}>
 
-        <LoginScreen/>
+        <RegisterScreen_1/>
 
       </SafeAreaView>
 

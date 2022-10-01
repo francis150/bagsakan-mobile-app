@@ -14,7 +14,7 @@ import { InputText } from '../../components/Inputs'
 const LoginScreen = () => {
 
     const netInfo = useNetInfo()
-    const [errorMessage, setErrorMessage] = useState('')
+    const [errorMessage, setErrorMessage] = useState('') // Something went wrong please try again.
     const [isAppLoading, setIsAppLoading] = useState(false)
 
     const [showOTPVerification, setShowOTPVerification] = useState(false)
@@ -79,6 +79,10 @@ const LoginScreen = () => {
                     style={styles.titleText} 
                 >Login to your account</Text>
 
+                <Text
+                    style={styles.errorMessage}
+                >{errorMessage}</Text>
+
                 <InputText 
                     style={styles.inputText}
                     prefixIcon={'smartphone'}
@@ -137,15 +141,21 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontFamily: Fonts.semibold,
-        fontSize: 22,
+        fontSize: 24,
         color: Colors.defaultBlack,
-        marginBottom: 20
+        marginBottom: 10
+    },
+    errorMessage: {
+        fontFamily: Fonts.semibold,
+        fontSize: 14,
+        color: Colors.errorColor,
+        marginBottom: 40
     },
     inputText: {
         marginBottom: 40
     },
     primaryButton: {
-        marginBottom: 20
+        marginBottom: 40
     },
     registerGroupContainer: {
         flexDirection: 'row',

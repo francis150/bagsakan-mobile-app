@@ -106,13 +106,12 @@ const styles = StyleSheet.create({
     inputContainer: {
         backgroundColor: Colors.inputBackground,
         flexDirection: 'row',
-        height: 53,
+        height: 58,
         width: '100%',
         borderWidth: 1,
-        borderRadius: 10,
+        borderRadius: 15,
         alignItems: 'center',
         paddingHorizontal: 20,
-        marginBottom: 5
     },
     prefixIcon: {
         marginRight: 10
@@ -125,7 +124,7 @@ const styles = StyleSheet.create({
     inputText: {
         flex: 1,
         fontFamily: Fonts.semibold,
-        fontSize: 16,
+        fontSize: 18,
     },
     suffixIcon: {
         marginLeft: 10,
@@ -133,5 +132,6 @@ const styles = StyleSheet.create({
     infoText: {
         fontFamily: Fonts.regular,
         fontSize: 12,
+        marginTop: 5
     },
 })
