@@ -20,3 +20,7 @@ export const Fonts = {
     bold: 'urbanist-bold',
     extrabold: 'urbanist-extrabold'
 }
+
+export const Assets = {
+    avatarPlaceholder: require('../assets/images/avatar-placeholder.png')
+}

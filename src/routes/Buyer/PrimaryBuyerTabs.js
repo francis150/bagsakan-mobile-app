@@ -18,6 +18,7 @@ const PrimaryBuyerTabs = () => {
         initialRouteName={'ProfileStack'} // TODO remove this later
         screenOptions={{
             headerShown: false,
+            tabBarHideOnKeyboard: true,
             tabBarActiveTintColor: Colors.accentColor
         }}
     >
