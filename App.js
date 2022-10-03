@@ -4,13 +4,16 @@ import * as Font from 'expo-font'
 import * as SplashScreen from 'expo-splash-screen'
 import { NavigationContainer } from '@react-navigation/native'
 import {useNetInfo} from '@react-native-community/netinfo'
+import { Provider } from 'react-redux'
+import {store} from './src/redux/store'
 
 import { fireAuth } from './src/config/Firebase'
 import { onAuthStateChanged } from 'firebase/auth'
 
 import { MessageModal } from './src/components/Modals'
+
 import AuthStack from './src/routes/AuthStack'
-import TestHome from './src/screens/TestHome'
+import AppStack from './src/routes/AppStack'
 
 export default function App() {
 
@@ -76,7 +79,7 @@ export default function App() {
 
         {
           userSignedIn ?
-          <TestHome />
+          <Provider store={store}><AppStack/></Provider>
           : <AuthStack />
         }
 

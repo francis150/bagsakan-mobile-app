@@ -10,7 +10,8 @@ export const Colors = {
 }
 
 export const Layout = {
-    defaultHorizontalPadding: 24
+    defaultHorizontalPadding: 24,
+    tabBarIconSize: 20
 }
 
 export const Fonts = {

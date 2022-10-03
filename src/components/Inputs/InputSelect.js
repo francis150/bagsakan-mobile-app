@@ -6,7 +6,7 @@ import Icon from '@expo/vector-icons/Feather'
 import {Colors, Fonts, Layout} from '../../constants/Values'
 import InputText from './InputText'
 import {StackHeader} from '../Headers'
-import LoadingPlaceholder from '../LoadingPlaceholder'
+import LoadingPlaceholder from '../Placeholders/LoadingPlaceholder'
 
 import StaticData from '../../assets/data'
 
