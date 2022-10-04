@@ -3,8 +3,9 @@ import { Modal, StyleSheet, Text, View } from 'react-native'
 
 import { Colors, Fonts, Layout } from '../../constants/Values'
 import { PrimaryButton } from '../Buttons'
+import DividerLine from '../DividerLine'
 
-const MessageModal = ({visible, title, message, onOkay}) => {
+const MessageModal = ({visible, title, message, onOkay, okayText}) => {
   return (
     <Modal
     visible={visible}
@@ -15,7 +16,7 @@ const MessageModal = ({visible, title, message, onOkay}) => {
           <Text style={styles.title}>{title}</Text>
           <Text style={styles.message}>{message}</Text>
           <PrimaryButton
-          text={'Got it!'}
+          text={okayText ?? 'Got it!'}
           onPress={onOkay} />
         </View>
       </View>
@@ -53,5 +54,6 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     marginBottom: 20
-  }
+  },
+
 })

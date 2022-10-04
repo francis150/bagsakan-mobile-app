@@ -76,17 +76,17 @@ export default function App() {
   return (
     <NavigationContainer>
 
-      {
-        netInfo.isConnected !== null && !netInfo.isConnected ?
-        <View style={styles.internetConnectionStatusBar}>
-          <Text style={styles.internetConnectionText}>No internet connection...</Text>
-        </View>
-        : null
-      }
-
       <SafeAreaView
       style={styles.container}
       onLayout={onRootViewLayout}>
+
+        {
+          netInfo.isConnected !== null && !netInfo.isConnected ?
+          <View style={styles.internetConnectionStatusBar}>
+            <Text style={styles.internetConnectionText}>No internet connection...</Text>
+          </View>
+          : null
+        }
 
         {
           userSignedIn ?

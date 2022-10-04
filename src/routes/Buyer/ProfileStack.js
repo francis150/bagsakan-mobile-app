@@ -1,5 +1,6 @@
-import React from 'react'
+import {useLayoutEffect} from 'react'
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
+import { getFocusedRouteNameFromRoute } from '@react-navigation/native'
 
 import {Colors} from '../../constants/Values'
 
@@ -17,7 +18,18 @@ import InviteFriendsScreen from '../../screens/Buyer/ProfileStack/InviteFriendsS
 
 const Stack = createStackNavigator()
 
-const ProfileStack = () => {
+const ProfileStack = ({ navigation, route }) => {
+
+  const tabHiddenRoutes = ['ProfileStack/EditProfileScreen']
+
+  useLayoutEffect(() => {
+    if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
+      navigation.setOptions({tabBarStyle: {display: 'none'}});
+     } else {
+     navigation.setOptions({tabBarStyle: {display: 'flex'}});
+    }
+  },[navigation, route])
+
   return (
     <Stack.Navigator
       screenOptions={{

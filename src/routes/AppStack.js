@@ -19,7 +19,7 @@ const AppStack = () => {
 
   useEffect(() => {
     onSnapshot(doc(fireDb, 'users', fireAuth.currentUser.uid), doc => {
-      dispatch(setCurrentUserData(doc.data()))
+      dispatch(setCurrentUserData({ id: doc.id, ...doc.data()}))
     }, err=> {
       console.error(`ERROR Updating currentUserState on AppStack.js`, err.message)
     })

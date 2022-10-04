@@ -51,7 +51,7 @@ const RegisterScreen_1 = ({navigation}) => {
         
         if (err.name == 'ValidationError') return setErrorMessage(err.errors[0])
 
-        setErrorMessage('Something went wrong. Please contact support.')
+        setErrorMessage('Something went wrong please try again later.')
         return console.error(err.message)
 
       } finally {
