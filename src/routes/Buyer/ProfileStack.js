@@ -20,10 +20,8 @@ const Stack = createStackNavigator()
 
 const ProfileStack = ({ navigation, route }) => {
 
-  const tabHiddenRoutes = ['ProfileStack/EditProfileScreen']
-
   useLayoutEffect(() => {
-    if(tabHiddenRoutes.includes(getFocusedRouteNameFromRoute(route))){
+    if(getFocusedRouteNameFromRoute(route) && getFocusedRouteNameFromRoute(route) !== 'ProfileStack/ProfileStackScreen') {
       navigation.setOptions({tabBarStyle: {display: 'none'}});
      } else {
      navigation.setOptions({tabBarStyle: {display: 'flex'}});

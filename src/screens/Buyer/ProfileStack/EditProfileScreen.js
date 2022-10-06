@@ -139,7 +139,7 @@ const EditProfileScreen = ({navigation}) => {
       } catch (err) {
 
         // no internet connection
-        if (err.code == 'INTERNET_CONNECTION_ERROR') return setNoInternetModalShown(true)
+        if (err.code == 'INTERNET_CONNECTION_ERROR') return setShowDisconnectionNotice(true)
 
         // invalid data
         if (err.name == 'ValidationError') return setErrorMessage(err.errors[0])
@@ -207,7 +207,7 @@ const EditProfileScreen = ({navigation}) => {
           source={currentUser.photo_url ? {uri: currentUser.photo_url.primary} : Assets.avatarPlaceholder}
         >
           <TouchableOpacity style={styles.editProfilePictureIcon} activeOpacity={.8} onPress={() => navigation.navigate('ProfileStack/EditProfilePictureScreen')}>
-            <Icon name={'edit'} size={20} color={Colors.accentColor} />
+            <Icon name={'edit'} size={15} color={Colors.defaultWhite} />
           </TouchableOpacity>
         </ImageBackground>
 
@@ -299,7 +299,7 @@ const EditProfileScreen = ({navigation}) => {
         <PrimaryButton
           disabled={isUpdatedButtonDisabled}
           style={styles.updateButton}
-          text={'Update'}
+          text={'Save changes'}
           onPress={onUpdateButtonPressed}
         />
       </View>
@@ -325,9 +325,9 @@ const styles = StyleSheet.create({
     marginBottom: 20
   },
   editProfilePictureIcon: {
-    backgroundColor: Colors.accentColorLight,
-    width: 30,
-    height: 30,
+    backgroundColor: Colors.accentColor,
+    width: 25,
+    height: 25,
     padding: 5,
     borderRadius: 5,
     position: 'absolute',
