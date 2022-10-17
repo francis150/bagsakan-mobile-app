@@ -6,7 +6,8 @@ export const Colors = {
     errorColor: '#F75555',
     defaultBlack: '#212121',
     defaultWhite: '#fff',
-    modalOverlayBackground: 'rgba(0, 0, 0, 0.7)'
+    modalOverlayBackground: 'rgba(0, 0, 0, 0.7)',
+    iosSwitchBackground: '#3e3e3e'
 }
 
 export const Layout = {

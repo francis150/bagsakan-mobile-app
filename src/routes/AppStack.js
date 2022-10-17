@@ -1,9 +1,10 @@
 import {useEffect} from 'react'
 import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/stack'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
 import { useDispatch } from 'react-redux'
 import {setCurrentUserData} from '../redux/CurrentUserSlice'
-import { loadNotificationPreferences } from '../redux/UserPreferencesSlice'
+import { loadNotificationPreferences, loadSecurityPreferences } from '../redux/UserPreferencesSlice'
 
 import {fireAuth, fireDb} from '../config/Firebase'
 import { onSnapshot, doc } from 'firebase/firestore'
@@ -20,7 +21,10 @@ const AppStack = () => {
 
   useEffect(() => {
 
+    // AsyncStorage.clear()
+
     dispatch(loadNotificationPreferences())
+    dispatch(loadSecurityPreferences())
 
     onSnapshot(doc(fireDb, 'users', fireAuth.currentUser.uid), doc => {
       dispatch(setCurrentUserData({ id: doc.id, ...doc.data()}))

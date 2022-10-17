@@ -86,7 +86,7 @@ const ProfileStackScreen = ({navigation}) => {
         <ProfileOrStoreMenuItem
           icon={(<Feather name={'shield'} size={20} color={Colors.defaultBlack}/>)}
           primaryText={'Security'}
-          onPress={() => console.log('Security...')}
+          onPress={() => navigation.navigate('ProfileStack/SecuritySettingsScreen')}
         />
 
         <ProfileOrStoreMenuItem

@@ -1,5 +1,5 @@
 import { ScrollView, StyleSheet, Text, View, Switch } from 'react-native'
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { loadNotificationPreferences } from '../../../redux/UserPreferencesSlice'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -25,11 +25,6 @@ const NotificationsSettingsScreen = ({navigation}) => {
     }
   }
 
-  useEffect(() => {
-    setNotificationPreferences(notificationPreferencesData)
-  }, [notificationPreferencesData])
-  
-
   return (
     <View style={styles.container}>
 
@@ -49,7 +44,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, general_notifications: !notificationPreferences.general_notifications})}
             value={notificationPreferences.general_notifications}
           />
@@ -60,7 +55,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, sound: !notificationPreferences.sound})}
             value={notificationPreferences.sound}
           />
@@ -71,7 +66,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, vibration: !notificationPreferences.vibration})}
             value={notificationPreferences.vibration}
           />
@@ -82,7 +77,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, messages: !notificationPreferences.messages})}
             value={notificationPreferences.messages}
           />
@@ -93,7 +88,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, order_updates: !notificationPreferences.order_updates})}
             value={notificationPreferences.order_updates}
           />
@@ -104,7 +99,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, subscribed_products: !notificationPreferences.subscribed_products})}
             value={notificationPreferences.subscribed_products}
           />
@@ -115,7 +110,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, subscribed_store: !notificationPreferences.subscribed_store})}
             value={notificationPreferences.subscribed_store}
           />
@@ -126,7 +121,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, promos_discounts: !notificationPreferences.promos_discounts})}
             value={notificationPreferences.promos_discounts}
           />
@@ -137,7 +132,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, app_updates: !notificationPreferences.app_updates})}
             value={notificationPreferences.app_updates}
           />
@@ -148,7 +143,7 @@ const NotificationsSettingsScreen = ({navigation}) => {
           <Switch
             trackColor={{ false: Colors.placeholderColor, true: Colors.accentColor }}
             thumbColor={Colors.defaultWhite}
-            ios_backgroundColor="#3e3e3e"
+            ios_backgroundColor={Colors.iosSwitchBackground}
             onValueChange={() => setNotificationPreferences({...notificationPreferences, tips: !notificationPreferences.tips})}
             value={notificationPreferences.tips}
           />

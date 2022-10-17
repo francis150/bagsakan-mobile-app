@@ -35,6 +35,34 @@ export const loadNotificationPreferences = createAsyncThunk(
     }
 )
 
+export const loadSecurityPreferences = createAsyncThunk(
+    'userPreferences/loadSecurityPreferences',
+    async () => {
+        try {
+            // Securty preferences
+            const securityPreferences = await AsyncStorage.getItem('@security_preferences')
+
+            if (securityPreferences !== null) {
+                return JSON.parse(securityPreferences)
+            } else {
+                const defaultSecurityPreferences = {
+                    remember_me: true,
+                    face_id: false,
+                    fingerprint_id: false,
+                    enable_pin: false
+                }
+
+                await AsyncStorage.setItem('@security_preferences', JSON.stringify(defaultSecurityPreferences))
+
+                const currentValue = await AsyncStorage.getItem('@security_preferences')
+                return JSON.parse(currentValue)
+            }
+        } catch (err) {
+            console.error('UserPreferencesSlice.js/loadSecurityPreferences', err.code, err.message)
+        }
+    }
+)
+
 
 const initialState = {
     notificationPreferences: null,
@@ -47,6 +75,9 @@ export const UserPreferencesSlice = createSlice({
     extraReducers: (builder) => {
         builder.addCase(loadNotificationPreferences.fulfilled, (state, action) => {
             state.notificationPreferences = action.payload
+        }),
+        builder.addCase(loadSecurityPreferences.fulfilled, (state, action) => {
+            state.securityPreferences = action.payload
         })
     }
 })
