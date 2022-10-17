@@ -80,7 +80,7 @@ const ProfileStackScreen = ({navigation}) => {
         <ProfileOrStoreMenuItem
           icon={(<Feather name="bell" size={20} color={Colors.defaultBlack} />)}
           primaryText={'Notifications'}
-          onPress={() => console.log('Notifications...')}
+          onPress={() => navigation.navigate('ProfileStack/NotificationsSettingsScreen')}
         />
 
         <ProfileOrStoreMenuItem

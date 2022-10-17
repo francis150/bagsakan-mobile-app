@@ -3,6 +3,7 @@ import { createStackNavigator, CardStyleInterpolators } from '@react-navigation/
 
 import { useDispatch } from 'react-redux'
 import {setCurrentUserData} from '../redux/CurrentUserSlice'
+import { loadNotificationPreferences } from '../redux/UserPreferencesSlice'
 
 import {fireAuth, fireDb} from '../config/Firebase'
 import { onSnapshot, doc } from 'firebase/firestore'
@@ -18,6 +19,9 @@ const AppStack = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
+
+    dispatch(loadNotificationPreferences())
+
     onSnapshot(doc(fireDb, 'users', fireAuth.currentUser.uid), doc => {
       dispatch(setCurrentUserData({ id: doc.id, ...doc.data()}))
     }, err=> {
