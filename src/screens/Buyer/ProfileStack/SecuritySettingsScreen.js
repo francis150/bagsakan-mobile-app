@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import { ScrollView, StyleSheet, Switch, Text, View } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-async-storage/async-storage'
@@ -13,12 +13,7 @@ const SecuritySettingsScreen = ({navigation}) => {
   const dispatch = useDispatch()
 
   const securityPreferencesData = useSelector(state => state.userPreferencesState.securityPreferences)
-  const [securityPreferences, setSecurityPreferences] = useState(securityPreferencesData)
-  
-  useEffect(() => {
-    console.log(securityPreferencesData)
-  }, [securityPreferencesData])
-  
+  const [securityPreferences, setSecurityPreferences] = useState(securityPreferencesData)  
 
   const saveAndBack = async () => {
     try {

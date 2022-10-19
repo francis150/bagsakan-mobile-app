@@ -68,7 +68,7 @@ const InputText = forwardRef(({
         />
 
         {
-            protectedEntry ?
+            protectedEntry && value > 0 ?
             <TouchableOpacity
             style={styles.suffixIcon}
             activeOpacity={.7}
@@ -76,7 +76,7 @@ const InputText = forwardRef(({
                 <Icon 
                     name={ isProtected ? 'eye' : 'eye-off' }
                     size={20} 
-                    color={ isFocused ? Colors.accentColor : value ? Colors.defaultBlack : Colors.placeholderColor }
+                    color={ isFocused ? Colors.accentColor : Colors.placeholderColor }
                 />
             </TouchableOpacity>
             : null
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 15,
         alignItems: 'center',
-        paddingHorizontal: 20,
+        paddingLeft: 20,
     },
     prefixIcon: {
         marginRight: 10
@@ -125,9 +125,12 @@ const styles = StyleSheet.create({
         flex: 1,
         fontFamily: Fonts.semibold,
         fontSize: 18,
+        marginRight: 20,
     },
     suffixIcon: {
-        marginLeft: 10,
+        height: '100%',
+        paddingRight: 20,
+        justifyContent: 'center',
     },
     infoText: {
         fontFamily: Fonts.regular,
