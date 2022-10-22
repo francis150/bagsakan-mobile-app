@@ -11,6 +11,7 @@ import { SecondaryButton } from '../../../components/Buttons'
 const SecuritySettingsScreen = ({navigation}) => {
 
   const dispatch = useDispatch()
+  const currentUser = useSelector(state => state.currentUserState.data)
 
   const securityPreferencesData = useSelector(state => state.userPreferencesState.securityPreferences)
   const [securityPreferences, setSecurityPreferences] = useState(securityPreferencesData)  
@@ -27,7 +28,7 @@ const SecuritySettingsScreen = ({navigation}) => {
   }
 
   const onPINToggle = (val) => {
-    if (val && !securityPreferences.pin) return navigation.navigate('ProfileStack/ChangePINScreen')
+    if (val && !currentUser.pin) return navigation.navigate('ProfileStack/ChangePINScreen')
     setSecurityPreferences({...securityPreferences, enable_pin: !securityPreferences.enable_pin})
   }
 
@@ -79,7 +80,7 @@ const SecuritySettingsScreen = ({navigation}) => {
         </View>
         
         <View style={styles.itemContainer}>
-          <Text style={styles.itemText}>6-digit PIN</Text>
+          <Text style={styles.itemText}>4-digit PIN</Text>
           <Switch
             trackColor={{false: Colors.placeholderColor, true: Colors.accentColor}}
             thumbColor={Colors.defaultWhite}
@@ -91,7 +92,7 @@ const SecuritySettingsScreen = ({navigation}) => {
 
         <SecondaryButton
           style={styles.changePINButton}
-          text={'Change PIN'}
+          text={currentUser.pin ? 'Change PIN' : 'Setup PIN'}
           onPress={() => console.log('Change PIN')}
           disabled={!securityPreferences.enable_pin}
         />
