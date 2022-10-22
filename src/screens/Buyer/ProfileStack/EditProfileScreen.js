@@ -4,9 +4,12 @@ import { useSelector } from 'react-redux'
 import { useNetInfo } from '@react-native-community/netinfo'
 import Icon from '@expo/vector-icons/Feather'
 import * as Yup from 'yup'
+import * as ImagePicker from 'expo-image-picker'
+import { manipulateAsync, SaveFormat } from 'expo-image-manipulator'
 
-import { fireDb, fireAuth } from '../../../config/Firebase'
+import { fireDb, fireAuth, fireStorage } from '../../../config/Firebase'
 import {collection, query, where, getDocs, doc, updateDoc, deleteField } from 'firebase/firestore'
+import { ref, deleteObject, uploadBytes, getDownloadURL } from 'firebase/storage'
 import { updateProfile, updateEmail } from 'firebase/auth'
 
 import {Colors, Fonts, Layout, Assets} from '../../../constants/Values'
@@ -32,6 +35,7 @@ const EditProfileScreen = ({navigation}) => {
 
   // structure original data
   const initialData = {
+    photo_url__primary: currentUser.photo_url ? {uri: currentUser.photo_url.primary} : Assets.avatarPlaceholder,
     firstName: currentUser.first_name,
     lastName: currentUser.last_name,
     city__id: currentUser.address.id,
@@ -54,12 +58,25 @@ const EditProfileScreen = ({navigation}) => {
   const streetAddressInput = useRef()
   const emailAddressInput = useRef()
   const scrollView = useRef()
-  
+
   // listen for dataChanges
   useEffect(() => {
     setIsUpdatedButtonDisabled(isDataEqual(originalData, dataChanges))
     setErrorMessage('')
   }, [originalData, dataChanges])
+
+  const chooseImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [3, 3],
+      quality: 1,
+    })
+
+    if (!result.cancelled) {
+      setDataChanges({...dataChanges, photo_url__primary: {uri: result.uri}})
+    }
+  }
   
   const onUpdateButtonPressed = () => {
     Keyboard.dismiss()
@@ -117,6 +134,33 @@ const EditProfileScreen = ({navigation}) => {
             province: dataChanges.city__province ? dataChanges.city__province : deleteField()
           },
           email: dataChanges.email ? dataChanges.email : deleteField()
+        }
+        // ...
+
+        // if profile image is updated 
+        if (dataChanges.photo_url__primary !== originalData.photo_url__primary) {
+          const primaryRef = ref(fireStorage, `users/${currentUser.id}/profile_picture/primary.jpg`)
+          const thumbnailRef = ref(fireStorage, `users/${currentUser.id}/profile_picture/thumbnail.jpg`)
+
+          // resize
+          let primaryImage = await manipulateAsync(dataChanges.photo_url__primary.uri, [{resize: {height: 900, width: 900}}], {format: SaveFormat.JPEG})
+          let thumbnailImage = await manipulateAsync(dataChanges.photo_url__primary.uri, [{resize: {height: 150, width: 150}}], {format: SaveFormat.JPEG})
+
+          // transform to blobs
+          primaryImage = await fetch(primaryImage.uri)
+          primaryImage = await primaryImage.blob()
+          thumbnailImage = await fetch(thumbnailImage.uri)
+          thumbnailImage = await thumbnailImage.blob()
+
+          // upload to firebase storage
+          await uploadBytes(primaryRef, primaryImage)
+          await uploadBytes(thumbnailRef, thumbnailImage)
+
+          // update firestore photo_url
+          const primaryUrl = await getDownloadURL(primaryRef)
+          const thumbnailUrl = await getDownloadURL(thumbnailRef)
+
+          updates['photo_url'] = {primary: primaryUrl, thumbnail: thumbnailUrl}
         }
         // ...
 
@@ -204,9 +248,9 @@ const EditProfileScreen = ({navigation}) => {
         <ImageBackground
           style={styles.profilePicturePreview}
           imageStyle={{borderRadius: 150}}
-          source={currentUser.photo_url ? {uri: currentUser.photo_url.primary} : Assets.avatarPlaceholder}
+          source={dataChanges.photo_url__primary}
         >
-          <TouchableOpacity style={styles.editProfilePictureIcon} activeOpacity={.8} onPress={() => navigation.navigate('ProfileStack/EditProfilePictureScreen')}>
+          <TouchableOpacity style={styles.editProfilePictureIcon} activeOpacity={.8} onPress={chooseImage}>
             <Icon name={'edit'} size={15} color={Colors.defaultWhite} />
           </TouchableOpacity>
         </ImageBackground>

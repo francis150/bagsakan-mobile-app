@@ -6,7 +6,6 @@ import {Colors} from '../../constants/Values'
 
 import ProfileStackScreen from '../../screens/Buyer/ProfileStack/ProfileStackScreen'
 import EditProfileScreen from '../../screens/Buyer/ProfileStack/EditProfileScreen'
-import EditProfilePictureScreen from '../../screens/Buyer/ProfileStack/EditProfilePictureScreen'
 import NotificationsSettingsScreen from '../../screens/Buyer/ProfileStack/NotificationsSettingsScreen'
 import SecuritySettingsScreen from '../../screens/Buyer/ProfileStack/SecuritySettingsScreen'
 import ChangePINScreen from '../../screens/Buyer/ProfileStack/ChangePINScreen'
@@ -47,11 +46,6 @@ const ProfileStack = ({ navigation, route }) => {
       <Stack.Screen
         name={'ProfileStack/EditProfileScreen'}
         component={EditProfileScreen}
-      />
-
-      <Stack.Screen
-        name={'ProfileStack/EditProfilePictureScreen'}
-        component={EditProfilePictureScreen}
       />
 
       <Stack.Screen
