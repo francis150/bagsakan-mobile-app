@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react'
-import { TouchableOpacity, ImageBackground, StyleSheet, Text, View, ScrollView, Keyboard } from 'react-native'
+import { TouchableOpacity, ImageBackground, StyleSheet, Text, View, ScrollView, Keyboard, KeyboardAvoidingView } from 'react-native'
 import { useSelector } from 'react-redux'
 import { useNetInfo } from '@react-native-community/netinfo'
 import Icon from '@expo/vector-icons/Feather'
@@ -238,106 +238,111 @@ const EditProfileScreen = ({navigation}) => {
         title={'Edit Profile'}
       />
 
-      <ScrollView 
-        contentContainerStyle={styles.contentContainer}
-        overScrollMode='never'
-        keyboardShouldPersistTaps={'handled'}
-        ref={scrollView}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
       >
-
-        <ImageBackground
-          style={styles.profilePicturePreview}
-          imageStyle={{borderRadius: 150}}
-          source={dataChanges.photo_url__primary}
+        <ScrollView 
+          contentContainerStyle={styles.contentContainer}
+          overScrollMode='never'
+          keyboardShouldPersistTaps={'handled'}
+          ref={scrollView}
         >
-          <TouchableOpacity style={styles.editProfilePictureIcon} activeOpacity={.8} onPress={chooseImage}>
-            <Icon name={'edit'} size={15} color={Colors.defaultWhite} />
-          </TouchableOpacity>
-        </ImageBackground>
 
-        <DividerLine style={styles.dividerLine}/>
+          <ImageBackground
+            style={styles.profilePicturePreview}
+            imageStyle={{borderRadius: 150}}
+            source={dataChanges.photo_url__primary}
+          >
+            <TouchableOpacity style={styles.editProfilePictureIcon} activeOpacity={.8} onPress={chooseImage}>
+              <Icon name={'edit'} size={15} color={Colors.defaultWhite} />
+            </TouchableOpacity>
+          </ImageBackground>
 
-        <Text style={styles.errorMessage}>{errorMessage}</Text>
+          <DividerLine style={styles.dividerLine}/>
 
-        <Text style={styles.label}>Name</Text>
+          <Text style={styles.errorMessage}>{errorMessage}</Text>
 
-        <InputText
-          style={styles.inputText}
-          placeholder={'First name'}
-          value={dataChanges.firstName}
-          onChangeText={(val) => setDataChanges({...dataChanges, firstName: val})}
-          returnKeyType={'next'}
-          ref={firstNameInput}
-          onSubmitEditing={() => lastNameInput.current.focus()}
-          blurOnSubmit={false}
-        />
+          <Text style={styles.label}>Name</Text>
 
-        <InputText
-          style={styles.lastInputText}
-          placeholder={'Last name'}
-          value={dataChanges.lastName}
-          onChangeText={val => setDataChanges({...dataChanges, lastName: val})}
-          returnKeyType={'done'}
-          ref={lastNameInput}
-        />
+          <InputText
+            style={styles.inputText}
+            placeholder={'First name'}
+            value={dataChanges.firstName}
+            onChangeText={(val) => setDataChanges({...dataChanges, firstName: val})}
+            returnKeyType={'next'}
+            ref={firstNameInput}
+            onSubmitEditing={() => lastNameInput.current.focus()}
+            blurOnSubmit={false}
+          />
 
-        <Text style={styles.label}>Address</Text>
+          <InputText
+            style={styles.lastInputText}
+            placeholder={'Last name'}
+            value={dataChanges.lastName}
+            onChangeText={val => setDataChanges({...dataChanges, lastName: val})}
+            returnKeyType={'done'}
+            ref={lastNameInput}
+          />
 
-        <InputSelect
-          style={styles.inputText}
-          placeholder={'City or municipality'}
-          value={dataChanges.city__text}
-          onChangeText={(item) => {
-            const data = {
-              city__id: item.id,
-              city__city: item.city,
-              city__text: item.text,
-              city__islandGroup: item.islandGroup,
-            }
-            if (item.province) data['city__province'] = item.province
+          <Text style={styles.label}>Address</Text>
 
-            setDataChanges({...dataChanges, ...data})
-          }}
-          dataFile={'ph-places'}
-        />
+          <InputSelect
+            style={styles.inputText}
+            placeholder={'City or municipality'}
+            value={dataChanges.city__text}
+            onChangeText={(item) => {
+              const data = {
+                city__id: item.id,
+                city__city: item.city,
+                city__text: item.text,
+                city__islandGroup: item.islandGroup,
+              }
+              if (item.province) data['city__province'] = item.province
 
-        <InputText
-          style={styles.inputText}
-          placeholder={'Barangay'}
-          value={dataChanges.neigborhood}
-          onChangeText={(val) => setDataChanges({...dataChanges, neigborhood: val})}
-          ref={neigborhoodInput}
-          returnKeyType={'next'}
-          onSubmitEditing={() => streetAddressInput.current.focus()}
-          blurOnSubmit={false}
-        />
+              setDataChanges({...dataChanges, ...data})
+            }}
+            dataFile={'ph-places'}
+            onSubmitEditing={() => setTimeout(() => {neigborhoodInput.current.focus()}, 500)}
+          />
 
-        <InputText
-          style={styles.lastInputText}
-          placeholder={'Street, house no., landmarks'}
-          value={dataChanges.streetAddress}
-          onChangeText={(val) => setDataChanges({...dataChanges, streetAddress: val})}
-          ref={streetAddressInput}
-          returnKeyType={'next'}
-          onSubmitEditing={() => emailAddressInput.current.focus()}
-          blurOnSubmit={false}
-        />
-        
-        <Text style={styles.label}>Contact</Text>
-        
-        <InputText
-          style={styles.lastInputText}
-          prefixIcon={'mail'}
-          placeholder={'Email address (Optional)'}
-          value={dataChanges.email}
-          onChangeText={(val) => setDataChanges({...dataChanges, email: val})}
-          ref={emailAddressInput}
-          returnKeyType={'done'}
-          keyboardType={'email-address'}
-          info={'The email address is not required but this will be very useful in retrieving your account.'}
-        />
+          <InputText
+            style={styles.inputText}
+            placeholder={'Barangay'}
+            value={dataChanges.neigborhood}
+            onChangeText={(val) => setDataChanges({...dataChanges, neigborhood: val})}
+            ref={neigborhoodInput}
+            returnKeyType={'next'}
+            onSubmitEditing={() => streetAddressInput.current.focus()}
+            blurOnSubmit={false}
+          />
 
-      </ScrollView>
+          <InputText
+            style={styles.lastInputText}
+            placeholder={'Street, house no., landmarks'}
+            value={dataChanges.streetAddress}
+            onChangeText={(val) => setDataChanges({...dataChanges, streetAddress: val})}
+            ref={streetAddressInput}
+            returnKeyType={'next'}
+            onSubmitEditing={() => emailAddressInput.current.focus()}
+            blurOnSubmit={false}
+          />
+          
+          <Text style={styles.label}>Contact</Text>
+          
+          <InputText
+            style={styles.lastInputText}
+            prefixIcon={'mail'}
+            placeholder={'Email address (Optional)'}
+            value={dataChanges.email}
+            onChangeText={(val) => setDataChanges({...dataChanges, email: val})}
+            ref={emailAddressInput}
+            returnKeyType={'done'}
+            keyboardType={'email-address'}
+            info={'The email address is not required but this will be very useful in retrieving your account.'}
+          />
+
+        </ScrollView>
+      </KeyboardAvoidingView>
 
       <View style={styles.footer}>
         <PrimaryButton
@@ -360,6 +365,7 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: Layout.defaultHorizontalPadding,
+    paddingBottom: 20
   },
   profilePicturePreview: {
     marginTop: 20,

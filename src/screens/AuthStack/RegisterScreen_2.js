@@ -1,5 +1,5 @@
 import {useState, useRef} from 'react'
-import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Keyboard } from 'react-native'
+import { ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Image, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
 import * as Yup from 'yup'
 
 import {Colors, Fonts, Layout} from '../../constants/Values'
@@ -72,63 +72,68 @@ const RegisterScreen_2 = ({navigation, route}) => {
                 suffixText={'2/3'}
             />
 
-            <ScrollView
-                contentContainerStyle={styles.content}
-                keyboardShouldPersistTaps={'handled'}
-                overScrollMode={'never'}
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
+                <ScrollView
+                    contentContainerStyle={styles.content}
+                    keyboardShouldPersistTaps={'handled'}
+                    overScrollMode={'never'}
+                    contentInsetAdjustmentBehavior={'always'}
+                >
 
-                <Image
-                    style={styles.logo}
-                    source={require('../../assets/images/bare-logo.png')}
-                />
+                    <Image
+                        style={styles.logo}
+                        source={require('../../assets/images/bare-logo.png')}
+                    />
 
-                <Text 
-                    style={styles.titleText}
-                >Add your primary address</Text>
+                    <Text 
+                        style={styles.titleText}
+                    >Add your primary address</Text>
 
-                <Text
-                    style={styles.errorMessage}
-                >{errorMessage}</Text>
+                    <Text
+                        style={styles.errorMessage}
+                    >{errorMessage}</Text>
 
-                <InputSelect
-                    style={styles.inputText}
-                    placeholder={'City or municipality'}
-                    value={city.text}
-                    onChangeText={(item) => {
-                        setCity(item)
-                        setTimeout(() => { neigborhoodInput.current.focus() }, 1000)
-                    }}
-                    dataFile={'ph-places'}
-                />
+                    <InputSelect
+                        style={styles.inputText}
+                        placeholder={'City or municipality'}
+                        value={city.text}
+                        onChangeText={(item) => setCity(item)}
+                        dataFile={'ph-places'}
+                        onSubmitEditing={() => setTimeout(() => { neigborhoodInput.current.focus() }, 500)}
+                    />
 
-                <InputText
-                    style={styles.inputText}
-                    placeholder={'Barangay'}
-                    value={neigborhood}
-                    onChangeText={(val) => setNeigborhood(val)}
-                    ref={neigborhoodInput}
-                    returnKeyType={'next'}
-                    onSubmitEditing={() => streetAddressInput.current.focus()}
-                    blurOnSubmit={false}
-                />
+                    <InputText
+                        style={styles.inputText}
+                        placeholder={'Barangay'}
+                        value={neigborhood}
+                        onChangeText={(val) => setNeigborhood(val)}
+                        ref={neigborhoodInput}
+                        returnKeyType={'next'}
+                        onSubmitEditing={() => streetAddressInput.current.focus()}
+                        blurOnSubmit={false}
+                        autoCapitalize={'words'}
+                    />
 
-                <InputText
-                    style={styles.lastInputText}
-                    placeholder={'Street, house no., landmarks'}
-                    value={streetAddress}
-                    onChangeText={(val) => setStreetAddress(val)}
-                    ref={streetAddressInput}
-                    onSubmitEditing={() => Keyboard.dismiss()}
-                    returnKeyType={'done'}
-                />
+                    <InputText
+                        style={styles.lastInputText}
+                        placeholder={'Street, house no., landmarks'}
+                        value={streetAddress}
+                        onChangeText={(val) => setStreetAddress(val)}
+                        ref={streetAddressInput}
+                        onSubmitEditing={() => Keyboard.dismiss()}
+                        returnKeyType={'done'}
+                        autoCapitalize={'words'}
+                    />
 
-                <PrimaryButton
-                    onPress={onNextButtonPressed}
-                    text={'Next'}
-                />
+                    <PrimaryButton
+                        onPress={onNextButtonPressed}
+                        text={'Next'}
+                    />
 
-            </ScrollView>
+                </ScrollView>
+            </KeyboardAvoidingView>
 
         </View>
     </TouchableWithoutFeedback>

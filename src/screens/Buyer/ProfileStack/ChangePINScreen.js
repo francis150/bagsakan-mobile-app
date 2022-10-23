@@ -15,6 +15,10 @@ const ChangePINScreen = ({navigation}) => {
 
   const currentUser = useSelector(state => state.currentUserState.data)
 
+  const [currentPIN, setCurrentPIN] = useState('')
+  const [newPIN1, setNewPIN1] = useState('')
+  const [newPIN2, setNewPIN2] = useState('')
+
   return (
     <View style={styles.container}>
 
@@ -34,13 +38,34 @@ const ChangePINScreen = ({navigation}) => {
 
       <ScrollView
         contentContainerStyle={styles.content}
-        keyboardShouldPersistTaps={'handled'}
+        keyboardShouldPersistTaps={'always'}
         overScrollMode={'never'}
       >
 
         <Text style={styles.errorMessage}>{errorMessage}</Text>
 
-        
+        <Text style={styles.label}>Current PIN</Text>
+
+        <InputPIN
+          style={{marginBottom: 60}}
+          value={currentPIN}
+          onChangeText={val => setCurrentPIN(val)}
+        />
+
+        <Text style={styles.label}>New PIN</Text>
+
+        <InputPIN
+          style={{marginBottom: 40}}
+          value={newPIN1}
+          onChangeText={val => setNewPIN1(val)}
+        />
+
+        <Text style={styles.label}>Re-enter new PIN</Text>
+
+        <InputPIN
+          value={newPIN2}
+          onChangeText={val => setNewPIN2(val)}
+        />
 
       </ScrollView>
 
@@ -56,7 +81,8 @@ const styles = StyleSheet.create({
   },
   content: {
     paddingHorizontal: Layout.defaultHorizontalPadding,
-    paddingVertical: 20
+    paddingVertical: 80,
+    backgroundColor: 'coral'
   },
   errorMessage: {
     marginBottom: 20,
@@ -65,5 +91,12 @@ const styles = StyleSheet.create({
     color: Colors.errorColor,
     alignSelf: 'center',
     textAlign: 'center'
-  }
+  },
+  label: {
+    fontFamily: Fonts.semibold,
+    fontSize: 14,
+    color: Colors.defaultBlack,
+    opacity: .5,
+    marginBottom: 20
+  },
 })

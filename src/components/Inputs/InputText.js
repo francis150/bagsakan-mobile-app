@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import Icon from '@expo/vector-icons/Feather'
-import {forwardRef, useState} from 'react'
+import {forwardRef, useState, useRef} from 'react'
 import {Colors, Fonts} from '../../constants/Values'
 
 const InputText = forwardRef(({
@@ -16,15 +16,22 @@ const InputText = forwardRef(({
     onSubmitEditing,
     blurOnSubmit,
     prefixText,
-    protectedEntry
+    protectedEntry,
+    autoCapitalize
 }, ref) => {
 
     const [isFocused, setIsFocused] = useState(false)
     const [isProtected, setIsProtected] = useState(protectedEntry)
 
+    const inputRef = ref ?? useRef()
+
   return (
-    <View
-    style={style}>
+    <TouchableOpacity
+        style={[{width: '100%'}, style]}
+        activeOpacity={1}
+        onPress={() => inputRef.current.focus()}
+    >
+    <View>
 
       <View style={[styles.inputContainer, {
         borderColor: isFocused ? Colors.accentColor : Colors.inputBackground
@@ -62,9 +69,11 @@ const InputText = forwardRef(({
             returnKeyType={returnKeyType}
             onSubmitEditing={onSubmitEditing}
             blurOnSubmit={blurOnSubmit}
-            ref={ref}
+            ref={inputRef}
             secureTextEntry={isProtected}
             placeholderTextColor={Colors.placeholderColor}
+            autoCorrect={false}
+            autoCapitalize={autoCapitalize}
         />
 
         {
@@ -94,6 +103,7 @@ const InputText = forwardRef(({
         }
 
     </View>
+    </TouchableOpacity>
   )
 })
 

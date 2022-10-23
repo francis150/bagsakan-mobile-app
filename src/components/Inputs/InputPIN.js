@@ -24,6 +24,7 @@ const InputPIN = forwardRef(({style, value, onChangeText, onSubmitEditing}, ref)
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
                 keyboardType={'numeric'}
+                returnKeyType={'next'}
                 style={{opacity: 0, position: 'absolute'}}
                 onSubmitEditing={onSubmitEditing}
             />

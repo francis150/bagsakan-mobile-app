@@ -1,5 +1,5 @@
 import {useState, useRef} from 'react'
-import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Image, Keyboard, KeyboardAvoidingView, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Platform } from 'react-native'
 import {useNetInfo} from '@react-native-community/netinfo'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import * as Yup from 'yup'
@@ -48,7 +48,6 @@ const LoginScreen = ({navigation}) => {
                         .test('starts-nine', 'Please enter a valid phone number.', (val) => val.charAt(0) == '9')
                         .min(10, 'Please enter a valid phone number.')
                 })
-
                 await validationSchema.validate({phoneNumber})
                 // ...
 
@@ -165,6 +164,7 @@ const LoginScreen = ({navigation}) => {
             />
 
             <FirebaseRecaptchaVerifierModal
+                appVerificationDisabledForTesting
                 ref={reCaptchaVerifier}
                 firebaseConfig={fireApp.options}
                 attemptInvisibleVerification={true}
@@ -174,58 +174,65 @@ const LoginScreen = ({navigation}) => {
             <StackHeader
             onBack={() => console.log('Back pressed')} />
             
-            <ScrollView
-                contentContainerStyle={styles.content}
-                keyboardShouldPersistTaps={'handled'}
-                overScrollMode={'never'} 
+
+            <KeyboardAvoidingView
+                behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
             >
 
-                <Image
-                    style={styles.logo}
-                    source={require('../../assets/images/bare-logo.png')} 
-                />
-
-                <Text
-                    style={styles.titleText} 
-                >Login to your account</Text>
-
-                <Text
-                    style={styles.errorMessage}
-                >{errorMessage}</Text>
-
-                <InputText 
-                    style={styles.inputText}
-                    prefixIcon={'smartphone'}
-                    prefixText={'+63'}
-                    placeholder={'Phone number'}
-                    value={phoneNumber}
-                    onChangeText={(val) => setPhoneNumber(val)}
-                    maxLength={10}
-                    keyboardType={'phone-pad'}
-                    ref={phoneNumberInput}
-                    onSubmitEditing={() => setErrorMessage('')}
-                />
-                
-                <PrimaryButton
-                    style={styles.primaryButton}
-                    text={'Login'}
-                    onPress={onLoginButtonPressed}
-                />
-
-                <View 
-                    style={styles.registerGroupContainer}
+                <ScrollView
+                    contentContainerStyle={styles.content}
+                    keyboardShouldPersistTaps={'handled'}
+                    overScrollMode={'never'} 
                 >
-                    <Text style={styles.registerGroupText}>Don't have an account?</Text>
-                    <Link style={styles.registerText} text={'Register'} onPress={onRegisterTextPressed} />
-                </View>
 
-                <Link
-                    style={styles.helpText}
-                    text={'Having trouble logging in?'}
-                    onPress={onHelpTextPressed}
-                />
+                    <Image
+                        style={styles.logo}
+                        source={require('../../assets/images/bare-logo.png')} 
+                    />
 
-            </ScrollView>
+                    <Text
+                        style={styles.titleText} 
+                    >Login to your account</Text>
+
+                    <Text
+                        style={styles.errorMessage}
+                    >{errorMessage}</Text>
+
+                    <InputText 
+                        style={styles.inputText}
+                        prefixIcon={'smartphone'}
+                        prefixText={'+63'}
+                        placeholder={'Phone number'}
+                        value={phoneNumber}
+                        onChangeText={(val) => setPhoneNumber(val)}
+                        maxLength={10}
+                        keyboardType={'phone-pad'}
+                        ref={phoneNumberInput}
+                        onSubmitEditing={() => setErrorMessage('')}
+                    />
+                    
+                    <PrimaryButton
+                        style={styles.primaryButton}
+                        text={'Login'}
+                        onPress={onLoginButtonPressed}
+                    />
+
+                    <View 
+                        style={styles.registerGroupContainer}
+                    >
+                        <Text style={styles.registerGroupText}>Don't have an account?</Text>
+                        <Link style={styles.registerText} text={'Register'} onPress={onRegisterTextPressed} />
+                    </View>
+
+                    <Link
+                        style={styles.helpText}
+                        text={'Having trouble logging in?'}
+                        onPress={onHelpTextPressed}
+                    />
+
+                </ScrollView>
+
+            </KeyboardAvoidingView>
 
         </View>
     </TouchableWithoutFeedback>

@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   profileInfoContainer: {
     height: 80,
     paddingTop: 20,
-    paddingBottom: 10,
+    marginBottom: 20,
     flexDirection: 'row',
   },
   profileInfoImage: {
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     fontSize: 16
   },
   modeSwitchButton: {
-    marginVertical: 20
+    marginBottom: 20
   },
   profileMenuContainer: {
     paddingVertical: 20

@@ -176,5 +176,5 @@ const styles = StyleSheet.create({
     color: Colors.defaultBlack,
     fontFamily: Fonts.semibold,
     fontSize: 16
-  }
+  },
 })

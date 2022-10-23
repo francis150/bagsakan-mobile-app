@@ -1,5 +1,5 @@
 import {useState, useRef, useEffect} from 'react'
-import { Modal, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Modal, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native'
 import { FlashList } from '@shopify/flash-list'
 import Icon from '@expo/vector-icons/Feather'
 
@@ -10,7 +10,7 @@ import LoadingPlaceholder from '../Placeholders/LoadingPlaceholder'
 
 import StaticData from '../../assets/data'
 
-const InputSelect = ({style, prefixIcon, prefixText, placeholder, value, dataFile, onChangeText}) => {
+const InputSelect = ({style, prefixIcon, prefixText, placeholder, value, dataFile, onChangeText, onSubmitEditing}) => {
 
   const [showModal, setShowModal] = useState(false)
   const [isFocused, setIsFocused] = useState(false)
@@ -48,6 +48,7 @@ const InputSelect = ({style, prefixIcon, prefixText, placeholder, value, dataFil
     onChangeText(item)
     setShowModal(false)
     setIsFocused(false)
+    if (onSubmitEditing) onSubmitEditing()
   }
 
   const onBackButtonPressed = () => {
@@ -192,7 +193,8 @@ const styles = StyleSheet.create({
   },
   modalContainer: {
     flex: 1,
-    backgroundColor: Colors.defaultWhite
+    backgroundColor: Colors.defaultWhite,
+    marginTop: Platform.OS == 'ios' ? 22 : 0,
   },
   modalContent: {
     flex: 1,

@@ -1,5 +1,5 @@
 import {useState, useRef} from 'react'
-import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View } from 'react-native'
+import { Image, Keyboard, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Platform, KeyboardAvoidingView } from 'react-native'
 import { FirebaseRecaptchaVerifierModal } from 'expo-firebase-recaptcha'
 import {useNetInfo} from '@react-native-community/netinfo'
 import * as Yup from 'yup'
@@ -217,55 +217,60 @@ const RegisterScreen_3 = ({navigation, route}) => {
           suffixText={'3/3'}
         />
 
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps={'handled'}
-          overScrollMode={'never'}
+        <KeyboardAvoidingView
+          behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
         >
 
-          <Image
-            style={styles.logo}
-            source={require('../../assets/images/bare-logo.png')}
-          />
+          <ScrollView
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps={'handled'}
+            overScrollMode={'never'}
+          >
 
-          <Text style={styles.titleText}>Set your account credentials</Text>
+            <Image
+              style={styles.logo}
+              source={require('../../assets/images/bare-logo.png')}
+            />
 
-          <Text style={styles.errorMessage}>{errorMessage}</Text>
+            <Text style={styles.titleText}>Set your account credentials</Text>
 
-          <InputText
-            style={styles.inputText}
-            prefixIcon={'smartphone'}
-            prefixText={'+63'}
-            placeholder={'Phone number'}
-            maxLength={10}
-            value={phoneNumber}
-            onChangeText={(val) => setPhoneNumber(val)}
-            ref={phoneNumberInput}
-            returnKeyType={'next'}
-            onSubmitEditing={() => emailInput.current.focus()}
-            blurOnSubmit={false}
-            keyboardType={'phone-pad'}
-          />
+            <Text style={styles.errorMessage}>{errorMessage}</Text>
 
-          <InputText
-            style={styles.lastInputText}
-            prefixIcon={'mail'}
-            placeholder={'Email address (Optional)'}
-            value={email}
-            onChangeText={(val) => setEmail(val)}
-            ref={emailInput}
-            returnKeyType={'done'}
-            onSubmitEditing={() => Keyboard.dismiss()}
-            keyboardType={'email-address'}
-            info={'The email address is not required but this will be very useful in retrieving your account.'}
-          />
+            <InputText
+              style={styles.inputText}
+              prefixIcon={'smartphone'}
+              prefixText={'+63'}
+              placeholder={'Phone number'}
+              maxLength={10}
+              value={phoneNumber}
+              onChangeText={(val) => setPhoneNumber(val)}
+              ref={phoneNumberInput}
+              returnKeyType={'next'}
+              onSubmitEditing={() => emailInput.current.focus()}
+              blurOnSubmit={false}
+              keyboardType={'phone-pad'}
+            />
 
-          <PrimaryButton
-            text={'Register'}
-            onPress={onRegisterBottonPressed}
-          />
+            <InputText
+              style={styles.lastInputText}
+              prefixIcon={'mail'}
+              placeholder={'Email address (Optional)'}
+              value={email}
+              onChangeText={(val) => setEmail(val)}
+              ref={emailInput}
+              returnKeyType={'done'}
+              onSubmitEditing={() => Keyboard.dismiss()}
+              keyboardType={'email-address'}
+              info={'The email address is not required but this will be very useful in retrieving your account.'}
+            />
 
-        </ScrollView>
+            <PrimaryButton
+              text={'Register'}
+              onPress={onRegisterBottonPressed}
+            />
+
+          </ScrollView>
+        </KeyboardAvoidingView>
 
       </View>
     </TouchableWithoutFeedback>

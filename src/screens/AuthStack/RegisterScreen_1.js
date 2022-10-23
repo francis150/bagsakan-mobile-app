@@ -1,5 +1,5 @@
 import {useState, createRef} from 'react'
-import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard } from 'react-native'
+import { Image, ScrollView, StyleSheet, Text, TouchableWithoutFeedback, View, Keyboard, KeyboardAvoidingView, Platform } from 'react-native'
 import * as Yup from 'yup'
 
 import {Colors, Fonts, Layout} from '../../constants/Values'
@@ -77,60 +77,66 @@ const RegisterScreen_1 = ({navigation}) => {
           suffixText={'1/3'}
         />
 
-        <ScrollView
-          contentContainerStyle={styles.content}
-          keyboardShouldPersistTaps={'handled'}
-          overScrollMode={'never'}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
         >
-
-          <Image
-            style={styles.logo}
-            source={require('../../assets/images/bare-logo.png')}
-          />
-
-          <Text 
-            style={styles.titleText}
-          >Create your account</Text>
-
-          <Text
-            style={styles.errorMessage}
-          >{errorMessage}</Text>
-
-          <InputText
-            style={styles.inputText}
-            placeholder={'First name'}
-            value={firstName}
-            onChangeText={(val) => setFirstName(val)}
-            ref={firstNameInput}
-            returnKeyType={'next'}
-            onSubmitEditing={() => lastNameInput.current.focus()}
-            blurOnSubmit={false}
-          />
-
-          <InputText
-            style={styles.lastInputText}
-            placeholder={'Last name'}
-            value={lastName}
-            onChangeText={(val) => setLastName(val)}
-            ref={lastNameInput}
-            returnKeyType={'done'}
-            onSubmitEditing={() => Keyboard.dismiss()}
-          />
-
-          <PrimaryButton
-            style={styles.primaryButton}
-            text={'Next'}
-            onPress={onNextButtonPressed}
-          />
-
-          <View
-            style={styles.loginGroupContainer}
+          <ScrollView
+            contentContainerStyle={styles.content}
+            keyboardShouldPersistTaps={'handled'}
+            overScrollMode={'never'}
           >
-            <Text style={styles.loginGroupText} >Already have an account?</Text>
-            <Link style={styles.loginText} onPress={() => navigation.goBack()} text={'Login'} />
-          </View>
 
-        </ScrollView>
+            <Image
+              style={styles.logo}
+              source={require('../../assets/images/bare-logo.png')}
+            />
+
+            <Text 
+              style={styles.titleText}
+            >Create your account</Text>
+
+            <Text
+              style={styles.errorMessage}
+            >{errorMessage}</Text>
+
+            <InputText
+              style={styles.inputText}
+              placeholder={'First name'}
+              value={firstName}
+              onChangeText={(val) => setFirstName(val)}
+              ref={firstNameInput}
+              returnKeyType={'next'}
+              onSubmitEditing={() => lastNameInput.current.focus()}
+              blurOnSubmit={false}
+              autoCapitalize={'words'}
+            />
+
+            <InputText
+              style={styles.lastInputText}
+              placeholder={'Last name'}
+              value={lastName}
+              onChangeText={(val) => setLastName(val)}
+              ref={lastNameInput}
+              returnKeyType={'done'}
+              onSubmitEditing={() => Keyboard.dismiss()}
+              autoCapitalize={'words'}
+            />
+
+            <PrimaryButton
+              style={styles.primaryButton}
+              text={'Next'}
+              onPress={onNextButtonPressed}
+            />
+
+            <View
+              style={styles.loginGroupContainer}
+            >
+              <Text style={styles.loginGroupText} >Already have an account?</Text>
+              <Link style={styles.loginText} onPress={() => navigation.goBack()} text={'Login'} />
+            </View>
+
+          </ScrollView>
+        </KeyboardAvoidingView>
 
       </View>
     </TouchableWithoutFeedback>
